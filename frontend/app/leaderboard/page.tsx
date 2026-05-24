@@ -1,16 +1,18 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import AuthGuard from "../../components/AuthGuard";
+import { api } from "../../lib/api";
 
-const topThree = [
+const fallbackTopThree = [
   { name: "Nova", xp: 1520, rank: 1 },
   { name: "Echo", xp: 1380, rank: 2 },
   { name: "Luna", xp: 1290, rank: 3 },
 ];
 
-const players = [
+const fallbackPlayers = [
   { name: "Nova", xp: 1520 },
   { name: "Echo", xp: 1380 },
   { name: "Luna", xp: 1290 },
@@ -25,6 +27,29 @@ const players = [
 
 export default function LeaderboardPage() {
   const [tab, setTab] = useState<"week" | "all">("week");
+  const [topThree, setTopThree] = useState(fallbackTopThree);
+  const [players, setPlayers] = useState(fallbackPlayers);
+
+  useEffect(() => {
+    const load = async () => {
+      try {
+        const response = await api.get("/user/leaderboard");
+        const list = response.data || [];
+        setPlayers(list);
+        setTopThree(
+          list.slice(0, 3).map((player: any, index: number) => ({
+            name: player.username,
+            xp: player.xp,
+            rank: index + 1,
+          }))
+        );
+      } catch {
+        toast.error("Failed to load leaderboard");
+      }
+    };
+
+    load();
+  }, [tab]);
 
   return (
     <AuthGuard>

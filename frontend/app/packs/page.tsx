@@ -1,15 +1,18 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import AuthGuard from "../../components/AuthGuard";
+import { api } from "../../lib/api";
+import { useAuthStore } from "../../store/authStore";
 
-const myPacks = [
+const fallbackMyPacks = [
   { name: "Night City", emoji: "🌃", count: 28, isPublic: false },
   { name: "Retro Tech", emoji: "📼", count: 40, isPublic: true },
 ];
 
-const communityPacks = [
+const fallbackCommunityPacks = [
   { name: "Dream Jobs", emoji: "💼", count: 36, author: "Nova" },
   { name: "Street Food", emoji: "🌮", count: 42, author: "Echo" },
   { name: "Space",
@@ -21,6 +24,42 @@ const communityPacks = [
 
 export default function PacksPage() {
   const [tab, setTab] = useState<"my" | "community">("my");
+  const user = useAuthStore((state) => state.user);
+  const [myPacks, setMyPacks] = useState(fallbackMyPacks);
+  const [communityPacks, setCommunityPacks] = useState(fallbackCommunityPacks);
+
+  useEffect(() => {
+    const load = async () => {
+      try {
+        const response = await api.get("/packs/custom");
+        const items = response.data || [];
+        setMyPacks(
+          items
+            .filter((pack: any) => pack.user_id === user?.id)
+            .map((pack: any) => ({
+              name: pack.name,
+              emoji: pack.emoji,
+              count: pack.words?.length || 0,
+              isPublic: pack.is_public,
+            }))
+        );
+        setCommunityPacks(
+          items
+            .filter((pack: any) => pack.is_public && pack.user_id !== user?.id)
+            .map((pack: any) => ({
+              name: pack.name,
+              emoji: pack.emoji,
+              count: pack.words?.length || 0,
+              author: "Player",
+            }))
+        );
+      } catch {
+        toast.error("Failed to load packs");
+      }
+    };
+
+    load();
+  }, [user?.id]);
 
   return (
     <AuthGuard>

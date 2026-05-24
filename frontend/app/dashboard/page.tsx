@@ -2,8 +2,12 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import AuthGuard from "../../components/AuthGuard";
 import BottomNav from "../../components/BottomNav";
+import { api } from "../../lib/api";
+import { useAuthStore } from "../../store/authStore";
 
 const modes = [
   {
@@ -38,7 +42,7 @@ const modes = [
   },
 ];
 
-const leaderboard = [
+const fallbackLeaderboard = [
   { name: "Nova", xp: 1240 },
   { name: "Rogue", xp: 1180 },
   { name: "Echo", xp: 1125 },
@@ -47,6 +51,21 @@ const leaderboard = [
 ];
 
 export default function DashboardPage() {
+  const user = useAuthStore((state) => state.user);
+  const [topPlayers, setTopPlayers] = useState(fallbackLeaderboard);
+
+  useEffect(() => {
+    const load = async () => {
+      try {
+        const response = await api.get("/user/leaderboard");
+        setTopPlayers(response.data.slice(0, 5));
+      } catch {
+        toast.error("Failed to load leaderboard");
+      }
+    };
+
+    load();
+  }, []);
   return (
     <AuthGuard>
       <div className="min-h-screen bg-brand-bg text-brand-cream">
@@ -63,7 +82,7 @@ export default function DashboardPage() {
           <div className="flex items-center gap-2">
             <div className="h-10 w-10 rounded-full bg-brand-red/30" />
             <div className="rounded-full border border-brand-border px-3 py-1 text-xs text-brand-cream/80">
-              ⚡ 320 XP
+              ⚡ {user?.xp ?? 0} XP
             </div>
           </div>
         </header>
@@ -129,7 +148,7 @@ export default function DashboardPage() {
             </Link>
           </div>
           <div className="mt-3 flex gap-3 overflow-x-auto pb-2">
-            {leaderboard.map((player) => (
+            {topPlayers.map((player) => (
               <div
                 key={player.name}
                 className="min-w-[140px] rounded-2xl border border-brand-border bg-brand-card p-3"
