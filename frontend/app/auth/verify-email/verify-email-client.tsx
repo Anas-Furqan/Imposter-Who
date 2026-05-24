@@ -1,16 +1,20 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
+import toast from "react-hot-toast";
+import { api } from "../../../lib/api";
 
 const CODE_LENGTH = 6;
 
 export default function VerifyEmailClient() {
+  const router = useRouter();
   const searchParams = useSearchParams();
   const email = searchParams.get("email") ?? "your email";
   const [digits, setDigits] = useState<string[]>(Array(CODE_LENGTH).fill(""));
   const [cooldown, setCooldown] = useState(60);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -23,6 +27,32 @@ export default function VerifyEmailClient() {
     () => digits.every((digit) => digit.length === 1),
     [digits]
   );
+
+  const handleVerify = async () => {
+    try {
+      setLoading(true);
+      await api.post("/auth/verify-email", {
+        email,
+        code: digits.join(""),
+      });
+      toast.success("Email verified");
+      router.push("/auth/login");
+    } catch (error: any) {
+      toast.error(error.response?.data?.message || "Verification failed");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleResend = async () => {
+    try {
+      await api.post("/auth/resend-verification", { email });
+      toast.success("Verification code resent");
+      setCooldown(60);
+    } catch (error: any) {
+      toast.error(error.response?.data?.message || "Failed to resend code");
+    }
+  };
 
   return (
     <div className="min-h-screen bg-brand-bg text-brand-cream">
@@ -62,14 +92,16 @@ export default function VerifyEmailClient() {
 
           <button
             disabled={!isComplete}
+            onClick={handleVerify}
             className="mt-6 h-12 w-full rounded-full bg-brand-red text-sm font-semibold text-white shadow-[0_12px_24px_rgba(255,59,92,0.35)] transition-transform enabled:hover:-translate-y-0.5 enabled:active:scale-[0.98] disabled:opacity-40"
           >
-            Verify
+            {loading ? "Verifying..." : "Verify"}
           </button>
 
           <button
             className="mt-3 w-full text-xs text-brand-cream/70 underline disabled:opacity-50"
             disabled={cooldown > 0}
+            onClick={handleResend}
           >
             Resend Code {cooldown > 0 ? `(${cooldown}s)` : ""}
           </button>

@@ -1,17 +1,60 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
+import toast from "react-hot-toast";
+import { api } from "../../../lib/api";
 
 const CODE_LENGTH = 6;
 
 type Step = "email" | "code" | "reset";
 
 export default function ForgotPasswordPage() {
+  const router = useRouter();
   const [step, setStep] = useState<Step>("email");
   const [digits, setDigits] = useState<string[]>(Array(CODE_LENGTH).fill(""));
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirm, setConfirm] = useState("");
+
+  const handleSendCode = async () => {
+    try {
+      setLoading(true);
+      await api.post("/auth/forgot-password", { email });
+      toast.success("Reset code sent");
+      setStep("code");
+    } catch (error: any) {
+      toast.error(error.response?.data?.message || "Failed to send code");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleReset = async () => {
+    if (password !== confirm) {
+      toast.error("Passwords do not match");
+      return;
+    }
+
+    try {
+      setLoading(true);
+      await api.post("/auth/reset-password", {
+        email,
+        code: digits.join(""),
+        password,
+      });
+      toast.success("Password updated");
+      router.push("/auth/login");
+    } catch (error: any) {
+      toast.error(error.response?.data?.message || "Reset failed");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-brand-bg text-brand-cream">
@@ -40,13 +83,16 @@ export default function ForgotPasswordPage() {
                   placeholder="you@email.com"
                   type="email"
                   autoComplete="email"
+                  value={email}
+                  onChange={(event) => setEmail(event.target.value)}
                 />
               </label>
               <button
-                onClick={() => setStep("code")}
-                className="mt-2 h-12 rounded-full bg-brand-red text-sm font-semibold text-white shadow-[0_12px_24px_rgba(255,59,92,0.35)] transition-transform hover:-translate-y-0.5 active:scale-[0.98]"
+                onClick={handleSendCode}
+                disabled={loading}
+                className="mt-2 h-12 rounded-full bg-brand-red text-sm font-semibold text-white shadow-[0_12px_24px_rgba(255,59,92,0.35)] transition-transform hover:-translate-y-0.5 active:scale-[0.98] disabled:opacity-50"
               >
-                Send Reset Code
+                {loading ? "Sending..." : "Send Reset Code"}
               </button>
             </div>
           )}
@@ -92,6 +138,8 @@ export default function ForgotPasswordPage() {
                     placeholder="••••••••"
                     type={showPassword ? "text" : "password"}
                     autoComplete="new-password"
+                    value={password}
+                    onChange={(event) => setPassword(event.target.value)}
                   />
                   <button
                     type="button"
@@ -111,6 +159,8 @@ export default function ForgotPasswordPage() {
                     placeholder="••••••••"
                     type={showConfirm ? "text" : "password"}
                     autoComplete="new-password"
+                    value={confirm}
+                    onChange={(event) => setConfirm(event.target.value)}
                   />
                   <button
                     type="button"
@@ -122,8 +172,12 @@ export default function ForgotPasswordPage() {
                 </div>
               </label>
 
-              <button className="mt-2 h-12 rounded-full bg-brand-red text-sm font-semibold text-white shadow-[0_12px_24px_rgba(255,59,92,0.35)] transition-transform hover:-translate-y-0.5 active:scale-[0.98]">
-                Reset Password
+              <button
+                onClick={handleReset}
+                disabled={loading}
+                className="mt-2 h-12 rounded-full bg-brand-red text-sm font-semibold text-white shadow-[0_12px_24px_rgba(255,59,92,0.35)] transition-transform hover:-translate-y-0.5 active:scale-[0.98] disabled:opacity-50"
+              >
+                {loading ? "Resetting..." : "Reset Password"}
               </button>
             </div>
           )}
