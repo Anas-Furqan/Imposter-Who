@@ -1,10 +1,12 @@
 "use client";
 
 import Link from "next/link";
+import AuthGuard from "../../../components/AuthGuard";
 
 export default function TrollModePage() {
   return (
-    <div className="min-h-screen bg-brand-bg text-brand-cream">
+    <AuthGuard>
+      <div className="min-h-screen bg-brand-bg text-brand-cream">
       <main className="mx-auto flex w-full max-w-[480px] flex-col gap-6 px-5 pb-[calc(env(safe-area-inset-bottom,0px)+40px)] pt-8">
         <header className="flex items-center justify-between">
           <div>
@@ -43,6 +45,7 @@ export default function TrollModePage() {
           Play Again
         </button>
       </main>
-    </div>
+      </div>
+    </AuthGuard>
   );
 }

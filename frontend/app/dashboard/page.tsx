@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
+import AuthGuard from "../../components/AuthGuard";
 import BottomNav from "../../components/BottomNav";
 
 const modes = [
@@ -47,7 +48,8 @@ const leaderboard = [
 
 export default function DashboardPage() {
   return (
-    <div className="min-h-screen bg-brand-bg text-brand-cream">
+    <AuthGuard>
+      <div className="min-h-screen bg-brand-bg text-brand-cream">
       <motion.main
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
@@ -146,7 +148,8 @@ export default function DashboardPage() {
           </div>
         </section>
       </motion.main>
-      <BottomNav />
-    </div>
+        <BottomNav />
+      </div>
+    </AuthGuard>
   );
 }

@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import AuthGuard from "../../../components/AuthGuard";
 
 const difficulties = ["Easy", "Medium", "Hard"];
 
@@ -18,7 +19,8 @@ export default function AiModePage() {
   const [pack, setPack] = useState("Animals");
 
   return (
-    <div className="min-h-screen bg-brand-bg text-brand-cream">
+    <AuthGuard>
+      <div className="min-h-screen bg-brand-bg text-brand-cream">
       <main className="mx-auto flex w-full max-w-[480px] flex-col gap-6 px-5 pb-[calc(env(safe-area-inset-bottom,0px)+40px)] pt-8">
         <header className="flex items-center justify-between">
           <div>
@@ -94,6 +96,7 @@ export default function AiModePage() {
           Start AI Match
         </button>
       </main>
-    </div>
+      </div>
+    </AuthGuard>
   );
 }

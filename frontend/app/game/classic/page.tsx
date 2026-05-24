@@ -1,12 +1,14 @@
 "use client";
 
 import Link from "next/link";
+import AuthGuard from "../../../components/AuthGuard";
 
 const players = ["Ava", "Noah", "Mia", "Leo", "Zoe", "Kai"];
 
 export default function ClassicModePage() {
   return (
-    <div className="min-h-screen bg-brand-bg text-brand-cream">
+    <AuthGuard>
+      <div className="min-h-screen bg-brand-bg text-brand-cream">
       <main className="mx-auto flex w-full max-w-[480px] flex-col gap-6 px-5 pb-[calc(env(safe-area-inset-bottom,0px)+40px)] pt-8">
         <header className="flex items-center justify-between">
           <div>
@@ -56,6 +58,7 @@ export default function ClassicModePage() {
           Go to Voting
         </Link>
       </main>
-    </div>
+      </div>
+    </AuthGuard>
   );
 }

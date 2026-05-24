@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import AuthGuard from "../../../components/AuthGuard";
 
 const players = ["Ava", "Noah", "Mia", "Leo", "Zoe", "Kai"];
 
@@ -12,7 +13,8 @@ export default function VotePage() {
   const canVote = useMemo(() => Boolean(selected), [selected]);
 
   return (
-    <div className="min-h-screen bg-brand-bg text-brand-cream">
+    <AuthGuard>
+      <div className="min-h-screen bg-brand-bg text-brand-cream">
       <main className="mx-auto flex w-full max-w-[480px] flex-col gap-6 px-5 pb-[calc(env(safe-area-inset-bottom,0px)+40px)] pt-8">
         <h1 className="text-center font-heading text-2xl">
           {revealed ? "Results" : "Vote for the Impostor"}
@@ -88,6 +90,7 @@ export default function VotePage() {
           </div>
         )}
       </main>
-    </div>
+      </div>
+    </AuthGuard>
   );
 }

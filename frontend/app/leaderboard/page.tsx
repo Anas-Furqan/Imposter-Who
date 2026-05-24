@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import AuthGuard from "../../components/AuthGuard";
 
 const topThree = [
   { name: "Nova", xp: 1520, rank: 1 },
@@ -26,7 +27,8 @@ export default function LeaderboardPage() {
   const [tab, setTab] = useState<"week" | "all">("week");
 
   return (
-    <div className="min-h-screen bg-brand-bg text-brand-cream">
+    <AuthGuard>
+      <div className="min-h-screen bg-brand-bg text-brand-cream">
       <main className="mx-auto flex w-full max-w-[480px] flex-col gap-6 px-5 pb-[calc(env(safe-area-inset-bottom,0px)+40px)] pt-8">
         <header className="flex items-center justify-between">
           <div>
@@ -103,6 +105,7 @@ export default function LeaderboardPage() {
           </div>
         </section>
       </main>
-    </div>
+      </div>
+    </AuthGuard>
   );
 }

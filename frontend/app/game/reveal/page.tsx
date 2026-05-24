@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import AuthGuard from "../../../components/AuthGuard";
 
 export default function RoleRevealPage() {
   const [playerNumber, setPlayerNumber] = useState(1);
@@ -20,7 +21,8 @@ export default function RoleRevealPage() {
   };
 
   return (
-    <div className="min-h-screen bg-brand-bg text-brand-cream">
+    <AuthGuard>
+      <div className="min-h-screen bg-brand-bg text-brand-cream">
       <main className="mx-auto flex w-full max-w-[480px] flex-col gap-6 px-5 pb-[calc(env(safe-area-inset-bottom,0px)+40px)] pt-10">
         <div className="text-center">
           <h1 className="font-heading text-2xl">Pass the phone</h1>
@@ -106,6 +108,7 @@ export default function RoleRevealPage() {
           </button>
         )}
       </main>
-    </div>
+      </div>
+    </AuthGuard>
   );
 }

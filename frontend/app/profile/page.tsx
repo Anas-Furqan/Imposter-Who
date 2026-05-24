@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import AuthGuard from "../../components/AuthGuard";
 
 const history = [
   { mode: "Classic", pack: "Animals", win: true, xp: 75, date: "Today" },
@@ -15,7 +16,8 @@ export default function ProfilePage() {
   const progress = Math.min(100, Math.round((xp / nextLevelXp) * 100));
 
   return (
-    <div className="min-h-screen bg-brand-bg text-brand-cream">
+    <AuthGuard>
+      <div className="min-h-screen bg-brand-bg text-brand-cream">
       <main className="mx-auto flex w-full max-w-[480px] flex-col gap-6 px-5 pb-[calc(env(safe-area-inset-bottom,0px)+40px)] pt-8">
         <header className="flex items-center justify-between">
           <h1 className="font-heading text-2xl">Profile</h1>
@@ -111,6 +113,7 @@ export default function ProfilePage() {
           Sign Out
         </button>
       </main>
-    </div>
+      </div>
+    </AuthGuard>
   );
 }

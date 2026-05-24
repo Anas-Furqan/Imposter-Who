@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
+import AuthGuard from "../../../components/AuthGuard";
 
 const modes = ["Classic", "Question", "Emoji", "Troll", "AI"];
 
@@ -44,7 +45,8 @@ export default function GameSetupPage() {
   );
 
   return (
-    <div className="min-h-screen bg-brand-bg text-brand-cream">
+    <AuthGuard>
+      <div className="min-h-screen bg-brand-bg text-brand-cream">
       <main className="mx-auto flex w-full max-w-[480px] flex-col gap-6 px-5 pb-[calc(env(safe-area-inset-bottom,0px)+90px)] pt-6">
         <header className="flex items-center gap-3">
           <Link href="/dashboard" className="text-xl">
@@ -248,6 +250,7 @@ export default function GameSetupPage() {
           Start Game 🎮
         </button>
       </div>
-    </div>
+      </div>
+    </AuthGuard>
   );
 }
