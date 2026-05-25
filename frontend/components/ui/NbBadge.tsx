@@ -1,35 +1,54 @@
-"use client";
+import { ReactNode } from "react";
+import { twMerge } from "tailwind-merge";
 
 interface NbBadgeProps {
   color?: string;
-  size?: "sm" | "md";
-  children: React.ReactNode;
+  children: ReactNode;
+  size?: "sm" | "md" | "lg";
+  className?: string;
 }
 
-const rotations = [-2, -1, 0, 1, 2];
-
-const getRotation = (value: string) => {
+// Simple hash function to generate a consistent rotation based on children string
+const hashString = (str: string) => {
   let hash = 0;
-  for (let i = 0; i < value.length; i += 1) {
-    hash = (hash << 5) - hash + value.charCodeAt(i);
-    hash |= 0;
+  for (let i = 0; i < str.length; i++) {
+    hash = str.charCodeAt(i) + ((hash << 5) - hash);
   }
-  const index = Math.abs(hash) % rotations.length;
-  return rotations[index];
+  return hash;
 };
 
-export default function NbBadge({ color = "var(--nb-yellow)", size = "md", children }: NbBadgeProps) {
-  const text = typeof children === "string" ? children : "badge";
-  const rotation = getRotation(text);
+export const NbBadge = ({
+  color = "#FFE135",
+  children,
+  size = "md",
+  className = "",
+}: NbBadgeProps) => {
+  const rotationOptions = [-2, -1, 0, 1, 2];
+  const hash = typeof children === "string" ? hashString(children) : 0;
+  const rotate = rotationOptions[Math.abs(hash) % rotationOptions.length];
+
+  const sizes = {
+    sm: "px-2 py-0.5 text-xs",
+    md: "px-3 py-1 text-sm",
+    lg: "px-4 py-1.5 text-base",
+  };
 
   return (
-    <span
-      style={{ background: color, transform: `rotate(${rotation}deg)` }}
-      className={`inline-flex items-center rounded-full border-2 border-black px-3 py-1 font-heading shadow-[2px_2px_0px_#000] ${
-        size === "sm" ? "text-[10px]" : "text-xs"
-      }`}
+    <div
+      style={{
+        backgroundColor: color,
+        transform: `rotate(${rotate}deg)`,
+        color: ['#000000', '#FF3B5C', '#3B82F6', '#8B5CF6'].includes(color) ? '#FFFFFF' : '#000000'
+      }}
+      className={twMerge(
+        "inline-block border-2 border-nb-border rounded-full shadow-[2px_2px_0px_#000] font-heading font-bold whitespace-nowrap",
+        sizes[size],
+        className
+      )}
     >
       {children}
-    </span>
+    </div>
   );
-}
+};
+
+export default NbBadge;

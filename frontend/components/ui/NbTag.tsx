@@ -1,23 +1,32 @@
-"use client";
+import { ReactNode } from "react";
+import { twMerge } from "tailwind-merge";
 
 interface NbTagProps {
-  children: React.ReactNode;
+  children: ReactNode;
   onRemove?: () => void;
+  className?: string;
 }
 
-export default function NbTag({ children, onRemove }: NbTagProps) {
+export const NbTag = ({ children, onRemove, className }: NbTagProps) => {
   return (
-    <span className="inline-flex items-center gap-2 rounded-full border-2 border-black bg-[var(--nb-yellow)] px-3 py-1 text-xs shadow-[2px_2px_0px_#000]">
-      {children}
+    <div
+      className={twMerge(
+        "inline-flex items-center gap-2 bg-nb-yellow text-nb-text border-2 border-nb-border rounded-[8px] px-3 py-1 shadow-[2px_2px_0px_#000] font-body font-medium",
+        className
+      )}
+    >
+      <span>{children}</span>
       {onRemove && (
         <button
           onClick={onRemove}
-          className="text-xs font-bold"
+          className="hover:text-nb-red focus:outline-none font-bold text-lg leading-none mt-[-2px]"
           aria-label="Remove"
         >
           ×
         </button>
       )}
-    </span>
+    </div>
   );
-}
+};
+
+export default NbTag;

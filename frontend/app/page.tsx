@@ -2,9 +2,9 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import NbBadge from "../components/ui/NbBadge";
-import NbButton from "../components/ui/NbButton";
-import NbCard from "../components/ui/NbCard";
+import { NbBadge } from "../components/ui/NbBadge";
+import { NbButton } from "../components/ui/NbButton";
+import { NbCard } from "../components/ui/NbCard";
 
 const features = [
   {

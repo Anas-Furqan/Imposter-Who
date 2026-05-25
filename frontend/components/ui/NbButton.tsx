@@ -1,62 +1,55 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { ButtonHTMLAttributes, ReactNode } from "react";
+import { twMerge } from "tailwind-merge";
 
-type Variant = "primary" | "secondary" | "danger" | "ghost";
+type MotionButtonProps = Omit<ButtonHTMLAttributes<HTMLButtonElement>, "onAnimationStart" | "onDragStart" | "onDragEnd" | "onDrag">;
 
-type Size = "sm" | "md" | "lg";
-
-interface NbButtonProps {
-  variant?: Variant;
-  size?: Size;
+interface NbButtonProps extends MotionButtonProps {
+  variant?: "primary" | "secondary" | "danger" | "ghost";
+  size?: "sm" | "md" | "lg";
+  children: ReactNode;
   loading?: boolean;
-  disabled?: boolean;
-  onClick?: () => void;
-  className?: string;
-  children: React.ReactNode;
 }
 
-const sizes: Record<Size, string> = {
-  sm: "h-9 px-3 text-sm",
-  md: "h-11 px-4 text-sm",
-  lg: "h-14 px-6 text-base",
-};
-
-const variants: Record<Variant, string> = {
-  primary:
-    "bg-[var(--nb-yellow)] text-black border-[2.5px] border-black shadow-[4px_4px_0px_#000]",
-  secondary:
-    "bg-white text-black border-[2.5px] border-black shadow-[4px_4px_0px_#000]",
-  danger:
-    "bg-[var(--nb-red)] text-white border-[2.5px] border-black shadow-[4px_4px_0px_#000]",
-  ghost:
-    "bg-transparent text-black border-2 border-black border-dashed shadow-none",
-};
-
-export default function NbButton({
+export const NbButton = ({
   variant = "primary",
   size = "md",
+  children,
   loading,
   disabled,
-  onClick,
   className,
-  children,
-}: NbButtonProps) {
+  ...props
+}: NbButtonProps) => {
+  const baseStyles = "font-heading font-bold inline-flex items-center justify-center transition-all disabled:opacity-50 disabled:cursor-not-allowed";
+  
+  const variants = {
+    primary: "bg-nb-yellow text-nb-text border-[2.5px] border-nb-border shadow-nb-md",
+    secondary: "bg-nb-surface text-nb-text border-[2.5px] border-nb-border shadow-nb-md",
+    danger: "bg-nb-red text-white border-[2.5px] border-nb-border shadow-nb-md",
+    ghost: "bg-transparent text-nb-text border-2 border-dashed border-nb-border",
+  };
+
+  const sizes = {
+    sm: "px-3 py-1.5 text-sm rounded-nb",
+    md: "px-5 py-2.5 text-base rounded-nb",
+    lg: "px-8 py-4 text-lg rounded-nb",
+  };
+
   return (
     <motion.button
-      whileTap={{ scale: 0.96, x: 2, y: 2 }}
-      onClick={onClick}
+      whileTap={!disabled && !loading ? { scale: 0.96, x: 2, y: 2, boxShadow: "1px 1px 0px #000" } : {}}
+      className={twMerge(baseStyles, variants[variant], sizes[size], className)}
       disabled={disabled || loading}
-      className={`inline-flex items-center justify-center gap-2 rounded-full font-heading transition-shadow ${
-        sizes[size]
-      } ${variants[variant]} ${
-        disabled ? "opacity-50" : "hover:shadow-[2px_2px_0px_#000]"
-      } ${className || ""}`}
+      {...props}
     >
-      {loading && (
-        <span className="h-4 w-4 animate-spin rounded-full border-2 border-black border-t-transparent" />
-      )}
+      {loading ? (
+        <span className="w-5 h-5 border-2 border-current border-t-transparent rounded-full animate-spin mr-2" />
+      ) : null}
       {children}
     </motion.button>
   );
-}
+};
+
+export default NbButton;

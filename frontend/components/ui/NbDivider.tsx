@@ -1,18 +1,23 @@
-"use client";
+import { twMerge } from "tailwind-merge";
 
 interface NbDividerProps {
   label?: string;
+  className?: string;
 }
 
-export default function NbDivider({ label }: NbDividerProps) {
+export const NbDivider = ({ label, className }: NbDividerProps) => {
   return (
-    <div className="relative my-4 flex items-center">
-      <div className="h-[2px] w-full bg-black" />
+    <div className={twMerge("relative py-4 w-full flex items-center justify-center", className)}>
+      <div className="absolute inset-0 flex items-center">
+        <div className="w-full border-b-[2.5px] border-nb-border" />
+      </div>
       {label && (
-        <span className="absolute left-1/2 -translate-x-1/2 rounded-full border-2 border-black bg-white px-3 py-1 text-[10px] font-semibold uppercase">
+        <div className="relative px-4 py-1 bg-nb-surface border-[2.5px] border-nb-border rounded-[8px] text-sm font-bold font-heading text-nb-text uppercase tracking-wider">
           {label}
-        </span>
+        </div>
       )}
     </div>
   );
-}
+};
+
+export default NbDivider;
