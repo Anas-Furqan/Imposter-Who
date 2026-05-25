@@ -3,7 +3,7 @@ import VerifyEmailClient from "./verify-email-client";
 
 export default function VerifyEmailPage() {
   return (
-    <Suspense fallback={<div className="min-h-screen bg-brand-bg" />}>
+    <Suspense fallback={<div className="min-h-screen bg-nb-bg" />}>
       <VerifyEmailClient />
     </Suspense>
   );

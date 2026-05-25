@@ -1,5 +1,5 @@
+import "dotenv/config";
 import cors from "cors";
-import dotenv from "dotenv";
 import express from "express";
 import rateLimit from "express-rate-limit";
 import helmet from "helmet";
@@ -8,8 +8,6 @@ import gameRouter from "./routes/game";
 import healthRouter from "./routes/health";
 import packsRouter from "./routes/packs";
 import userRouter from "./routes/user";
-
-dotenv.config();
 
 const app = express();
 const port = Number(process.env.PORT) || 5000;

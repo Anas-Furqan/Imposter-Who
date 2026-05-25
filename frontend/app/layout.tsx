@@ -1,17 +1,24 @@
 import type { Metadata } from "next";
-import { Fredoka, Nunito } from "next/font/google";
+import { DM_Sans, Space_Mono, Syne } from "next/font/google";
 import { Toaster } from "react-hot-toast";
 import "./globals.css";
 
-const nunito = Nunito({
+const syne = Syne({
   subsets: ["latin"],
-  variable: "--font-body",
+  weight: ["700", "800"],
+  variable: "--font-syne",
 });
 
-const fredoka = Fredoka({
+const dmSans = DM_Sans({
   subsets: ["latin"],
-  weight: ["500", "600", "700"],
-  variable: "--font-heading",
+  weight: ["400", "500", "600"],
+  variable: "--font-dm",
+});
+
+const spaceMono = Space_Mono({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  variable: "--font-mono",
 });
 
 export const metadata: Metadata = {
@@ -27,9 +34,9 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${nunito.variable} ${fredoka.variable} h-full antialiased`}
+      className={`${syne.variable} ${dmSans.variable} ${spaceMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full bg-brand-bg text-brand-cream font-body">
+      <body className="min-h-full bg-nb-bg text-nb-text font-body">
         <Toaster position="top-center" toastOptions={{ duration: 3000 }} />
         {children}
       </body>

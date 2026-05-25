@@ -1,21 +1,54 @@
 @import "tailwindcss";
 
 :root {
-  color-scheme: dark;
+  --nb-bg: #fffbf0;
+  --nb-surface: #ffffff;
+  --nb-border: #000000;
+  --nb-shadow: #000000;
+  --nb-text: #0a0a0a;
+  --nb-text-muted: #444444;
+  --nb-yellow: #ffe135;
+  --nb-yellow-hover: #fdd100;
+  --nb-red: #ff3b5c;
+  --nb-green: #00c875;
+  --nb-blue: #3b82f6;
+  --nb-orange: #ff6b35;
+  --nb-pink: #ff61a6;
+  --nb-purple: #8b5cf6;
+  --nb-teal: #06b6d4;
+  --nb-lime: #a3e635;
+  --mode-classic: #ffe135;
+  --mode-question: #ff6b35;
+  --mode-emoji: #ff61a6;
+  --mode-troll: #8b5cf6;
+  --mode-ai: #06b6d4;
+  --mode-custom: #00c875;
+  --nb-border-width: 2.5px;
+  --nb-border-radius: 12px;
+  --nb-border-radius-lg: 16px;
+  --nb-border-radius-pill: 9999px;
+  --nb-shadow-sm: 3px 3px 0px #000;
+  --nb-shadow-md: 4px 4px 0px #000;
+  --nb-shadow-lg: 6px 6px 0px #000;
+  --nb-shadow-xl: 8px 8px 0px #000;
 }
 
 body {
-  background: #0d0d1a;
-  color: #f5f0ff;
-  font-family: var(--font-body), sans-serif;
+  background: var(--nb-bg);
+  color: var(--nb-text);
+  font-family: var(--font-dm), sans-serif;
 }
 
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='0.8'/%3E%3C/svg%3E");
-  opacity: 0.03;
-  pointer-events: none;
-  z-index: 50;
+h1,
+h2,
+h3,
+.heading {
+  font-family: var(--font-syne), sans-serif;
+}
+
+.mono,
+.xp,
+.score,
+.count {
+  font-family: var(--font-mono), monospace;
 }

@@ -5,6 +5,8 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import toast from "react-hot-toast";
 import { api } from "../../../lib/api";
+import NbButton from "../../../components/ui/NbButton";
+import NbCard from "../../../components/ui/NbCard";
 
 const CODE_LENGTH = 6;
 
@@ -55,21 +57,22 @@ export default function VerifyEmailClient() {
   };
 
   return (
-    <div className="min-h-screen bg-brand-bg text-brand-cream">
+    <div className="min-h-screen bg-nb-bg text-nb-text">
       <motion.main
-        initial={{ opacity: 0, y: 16 }}
+        initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.25, ease: "easeOut" }}
         className="mx-auto flex w-full max-w-[480px] flex-col gap-6 px-5 pb-[calc(env(safe-area-inset-bottom,0px)+28px)] pt-10"
       >
         <div className="text-center">
           <div className="text-3xl">📬</div>
-          <h1 className="mt-2 font-heading text-3xl">Check Your Email</h1>
-          <p className="mt-2 text-sm text-brand-cream/70">
-            We sent a 6-digit code to {email}
+          <h1 className="mt-2 font-heading text-3xl">CHECK YOUR INBOX</h1>
+          <p className="mt-2 text-sm text-nb-muted">
+            We sent a 6-digit code to <span className="font-semibold">{email}</span>
           </p>
         </div>
 
-        <div className="rounded-3xl border border-brand-border bg-brand-card p-5 shadow-[0_18px_40px_rgba(0,0,0,0.35)]">
+        <NbCard bgColor="var(--nb-surface)" className="p-6">
           <div className="grid grid-cols-6 gap-2">
             {digits.map((digit, index) => (
               <input
@@ -85,27 +88,28 @@ export default function VerifyEmailClient() {
                 }}
                 maxLength={1}
                 inputMode="numeric"
-                className="h-12 rounded-2xl border border-brand-border bg-black/40 text-center text-lg text-brand-cream outline-none"
+                className="h-16 rounded-[10px] border-[2.5px] border-black bg-white text-center text-lg font-semibold outline-none focus:border-[var(--nb-yellow)] focus:shadow-[4px_4px_0px_#000]"
               />
             ))}
           </div>
 
-          <button
+          <NbButton
+            loading={loading}
             disabled={!isComplete}
             onClick={handleVerify}
-            className="mt-6 h-12 w-full rounded-full bg-brand-red text-sm font-semibold text-white shadow-[0_12px_24px_rgba(255,59,92,0.35)] transition-transform enabled:hover:-translate-y-0.5 enabled:active:scale-[0.98] disabled:opacity-40"
+            className="mt-6 w-full"
           >
-            {loading ? "Verifying..." : "Verify"}
-          </button>
+            VERIFY
+          </NbButton>
 
           <button
-            className="mt-3 w-full text-xs text-brand-cream/70 underline disabled:opacity-50"
+            className="mt-3 w-full text-xs font-semibold underline"
             disabled={cooldown > 0}
             onClick={handleResend}
           >
             Resend Code {cooldown > 0 ? `(${cooldown}s)` : ""}
           </button>
-        </div>
+        </NbCard>
       </motion.main>
     </div>
   );

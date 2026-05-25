@@ -6,6 +6,10 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { api } from "../../../lib/api";
+import NbButton from "../../../components/ui/NbButton";
+import NbCard from "../../../components/ui/NbCard";
+import NbInput from "../../../components/ui/NbInput";
+import NbDivider from "../../../components/ui/NbDivider";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -43,113 +47,94 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="min-h-screen bg-brand-bg text-brand-cream">
+    <div className="min-h-screen bg-nb-bg text-nb-text">
       <motion.main
-        initial={{ opacity: 0, y: 16 }}
+        initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.25, ease: "easeOut" }}
         className="mx-auto flex w-full max-w-[480px] flex-col gap-6 px-5 pb-[calc(env(safe-area-inset-bottom,0px)+28px)] pt-10"
       >
         <div className="text-center">
           <div className="text-3xl">🕵️</div>
-          <h1 className="mt-2 font-heading text-3xl">Create Account</h1>
-          <p className="mt-2 text-sm text-brand-cream/70">
-            Join 10M+ players and start the chaos.
+          <h1 className="mt-2 font-heading text-3xl">JOIN THE GAME</h1>
+          <p className="mt-2 text-sm text-nb-muted">
+            Create your account and start the chaos.
           </p>
         </div>
 
-        <div className="rounded-3xl border border-brand-border bg-brand-card p-5 shadow-[0_18px_40px_rgba(0,0,0,0.35)]">
-          <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
-            <label className="text-sm text-brand-cream/80">
-              Username
-              <div className="mt-2 flex items-center gap-2 rounded-2xl border border-brand-border bg-black/40 px-4 py-3">
-                <span className="text-brand-cream/50">@</span>
-                <input
-                  className="w-full bg-transparent text-sm text-brand-cream outline-none"
-                  placeholder="yourname"
-                  autoComplete="username"
-                  value={form.username}
-                  onChange={(event) =>
-                    setForm((prev) => ({ ...prev, username: event.target.value }))
-                  }
-                />
-              </div>
-            </label>
+        <NbCard bgColor="var(--nb-surface)" className="p-6">
+          <div className="h-1 w-full bg-[var(--nb-yellow)]" />
+          <form className="mt-6 flex flex-col gap-4" onSubmit={handleSubmit}>
+            <NbInput
+              label="Username"
+              placeholder="yourname"
+              value={form.username}
+              onChange={(event) =>
+                setForm((prev) => ({ ...prev, username: event.target.value }))
+              }
+            />
+            <NbInput
+              label="Email"
+              placeholder="you@email.com"
+              type="email"
+              value={form.email}
+              onChange={(event) =>
+                setForm((prev) => ({ ...prev, email: event.target.value }))
+              }
+            />
 
-            <label className="text-sm text-brand-cream/80">
-              Email
-              <input
-                className="mt-2 w-full rounded-2xl border border-brand-border bg-black/40 px-4 py-3 text-sm text-brand-cream outline-none"
-                placeholder="you@email.com"
-                type="email"
-                autoComplete="email"
-                value={form.email}
+            <NbDivider label="Secure" />
+
+            <div>
+              <NbInput
+                label="Password"
+                placeholder="••••••••"
+                type={showPassword ? "text" : "password"}
+                value={form.password}
                 onChange={(event) =>
-                  setForm((prev) => ({ ...prev, email: event.target.value }))
+                  setForm((prev) => ({ ...prev, password: event.target.value }))
                 }
               />
-            </label>
+              <button
+                type="button"
+                onClick={() => setShowPassword((value) => !value)}
+                className="mt-2 text-xs font-semibold underline"
+              >
+                {showPassword ? "Hide" : "Show"} password
+              </button>
+            </div>
 
-            <label className="text-sm text-brand-cream/80">
-              Password
-              <div className="mt-2 flex items-center rounded-2xl border border-brand-border bg-black/40 px-4 py-3">
-                <input
-                  className="w-full bg-transparent text-sm text-brand-cream outline-none"
-                  placeholder="••••••••"
-                  type={showPassword ? "text" : "password"}
-                  autoComplete="new-password"
-                  value={form.password}
-                  onChange={(event) =>
-                    setForm((prev) => ({ ...prev, password: event.target.value }))
-                  }
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword((value) => !value)}
-                  className="text-xs text-brand-cream/70"
-                >
-                  {showPassword ? "Hide" : "Show"}
-                </button>
-              </div>
-            </label>
+            <div>
+              <NbInput
+                label="Confirm Password"
+                placeholder="••••••••"
+                type={showConfirm ? "text" : "password"}
+                value={form.confirmPassword}
+                onChange={(event) =>
+                  setForm((prev) => ({
+                    ...prev,
+                    confirmPassword: event.target.value,
+                  }))
+                }
+              />
+              <button
+                type="button"
+                onClick={() => setShowConfirm((value) => !value)}
+                className="mt-2 text-xs font-semibold underline"
+              >
+                {showConfirm ? "Hide" : "Show"} confirm
+              </button>
+            </div>
 
-            <label className="text-sm text-brand-cream/80">
-              Confirm Password
-              <div className="mt-2 flex items-center rounded-2xl border border-brand-border bg-black/40 px-4 py-3">
-                <input
-                  className="w-full bg-transparent text-sm text-brand-cream outline-none"
-                  placeholder="••••••••"
-                  type={showConfirm ? "text" : "password"}
-                  autoComplete="new-password"
-                  value={form.confirmPassword}
-                  onChange={(event) =>
-                    setForm((prev) => ({
-                      ...prev,
-                      confirmPassword: event.target.value,
-                    }))
-                  }
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowConfirm((value) => !value)}
-                  className="text-xs text-brand-cream/70"
-                >
-                  {showConfirm ? "Hide" : "Show"}
-                </button>
-              </div>
-            </label>
-
-            <button
-              disabled={loading}
-              className="mt-2 h-12 rounded-full bg-brand-red text-sm font-semibold text-white shadow-[0_12px_24px_rgba(255,59,92,0.35)] transition-transform hover:-translate-y-0.5 active:scale-[0.98] disabled:opacity-50"
-            >
-              {loading ? "Creating..." : "Create Account"}
-            </button>
+            <NbButton loading={loading} className="w-full">
+              CREATE ACCOUNT
+            </NbButton>
           </form>
-        </div>
+        </NbCard>
 
-        <p className="text-center text-sm text-brand-cream/70">
+        <p className="text-center text-sm text-nb-muted">
           Already have an account?{" "}
-          <Link href="/auth/login" className="text-brand-cream underline">
+          <Link href="/auth/login" className="font-semibold underline">
             Sign In
           </Link>
         </p>

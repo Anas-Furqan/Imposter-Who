@@ -1,113 +1,86 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Link from "next/link";
+import NbBadge from "../components/ui/NbBadge";
+import NbButton from "../components/ui/NbButton";
+import NbCard from "../components/ui/NbCard";
 
 const features = [
   {
     emoji: "🎭",
-    title: "Bluff & Deceive",
+    title: "BLUFF & DECEIVE",
     body: "Sell a fake story or spot the liar before time runs out.",
+    color: "#FFE135",
   },
   {
     emoji: "🗳️",
-    title: "Vote & Debate",
+    title: "VOTE & DEBATE",
     body: "Argue your case, then vote together to expose the impostor.",
+    color: "#FF61A6",
   },
   {
     emoji: "🎮",
-    title: "5 Game Modes",
+    title: "5 GAME MODES",
     body: "Classic, questions, emojis, troll chaos, or AI solo play.",
+    color: "#06B6D4",
   },
 ];
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-brand-bg text-brand-cream">
-      <div className="pointer-events-none fixed inset-0 overflow-hidden">
-        <div className="absolute -top-24 left-1/2 h-64 w-64 -translate-x-1/2 rounded-full bg-[#ff3b5c]/20 blur-[120px]" />
-        <div className="absolute bottom-0 right-0 h-72 w-72 translate-x-1/3 translate-y-1/3 rounded-full bg-[#7f63ff]/20 blur-[140px]" />
-      </div>
-
+    <div className="min-h-screen bg-nb-bg text-nb-text">
       <motion.main
-        initial="hidden"
-        animate="show"
-        variants={{
-          hidden: { opacity: 0 },
-          show: {
-            opacity: 1,
-            transition: { staggerChildren: 0.12, delayChildren: 0.1 },
-          },
-        }}
-        className="relative mx-auto flex w-full max-w-[480px] flex-col gap-8 px-5 pb-[calc(env(safe-area-inset-bottom,0px)+28px)] pt-10"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.25, ease: "easeOut" }}
+        className="mx-auto flex w-full max-w-[480px] flex-col gap-8 px-5 pb-[calc(env(safe-area-inset-bottom,0px)+32px)] pt-12"
       >
-        <motion.div
-          variants={{ hidden: { opacity: 0, y: -12 }, show: { opacity: 1, y: 0 } }}
-          className="flex flex-col items-center text-center"
-        >
-          <div className="text-4xl drop-shadow-[0_0_18px_rgba(255,59,92,0.45)]">
-            🕵️
+        <div className="text-center">
+          <div className="text-5xl">🕵️</div>
+          <h1 className="mt-3 font-heading text-3xl">IMPOSTER WHO?</h1>
+          <div className="mx-auto mt-2 h-1 w-40 bg-black" />
+          <div className="mt-4 flex justify-center">
+            <NbBadge color="var(--nb-yellow)">⭐ 10M+ DOWNLOADS</NbBadge>
           </div>
-          <h1 className="mt-2 font-heading text-4xl tracking-tight text-brand-cream">
-            IMPOSTER WHO?
-          </h1>
-          <p className="mt-3 max-w-sm text-base text-brand-cream/80">
-            One secret word. One impostor. Can you spot the fake?
+        </div>
+
+        <div className="text-center">
+          <p className="font-heading text-2xl">One secret word.</p>
+          <p className="mt-2 inline-block -rotate-2 bg-[var(--nb-yellow)] px-3 py-1 font-heading text-3xl text-[var(--nb-red)]">
+            One impostor.
           </p>
-        </motion.div>
+          <p className="mt-3 text-base text-nb-muted">Can you spot the fake?</p>
+        </div>
 
-        <motion.div
-          variants={{ hidden: { opacity: 0, scale: 0.96 }, show: { opacity: 1, scale: 1 } }}
-          className="mx-auto w-fit rounded-full bg-brand-red px-4 py-2 text-sm font-semibold text-white shadow-[0_8px_20px_rgba(255,59,92,0.35)]"
-        >
-          ⭐ 10M+ Downloads
-        </motion.div>
+        <div className="flex flex-col gap-3">
+          <NbButton size="lg" className="w-full">
+            ▶ PLAY NOW
+          </NbButton>
+          <Link href="/auth/login" className="w-full">
+            <NbButton size="lg" variant="secondary" className="w-full">
+              SIGN IN
+            </NbButton>
+          </Link>
+        </div>
 
-        <motion.div
-          variants={{ hidden: { opacity: 0, y: 16 }, show: { opacity: 1, y: 0 } }}
-          className="flex flex-col gap-3"
-        >
-          <button className="h-14 w-full rounded-full bg-brand-red text-base font-semibold text-white shadow-[0_12px_24px_rgba(255,59,92,0.35)] transition-transform duration-200 hover:-translate-y-0.5 active:scale-[0.98]">
-            ▶ Play Now
-          </button>
-          <button className="h-14 w-full rounded-full border border-brand-cream/40 text-base font-semibold text-brand-cream transition-all hover:border-brand-cream hover:bg-brand-cream/10">
-            Sign In
-          </button>
-        </motion.div>
-
-        <motion.div
-          variants={{ hidden: { opacity: 0, y: 16 }, show: { opacity: 1, y: 0 } }}
-          className="-mx-5 flex gap-4 overflow-x-auto px-5 pb-2"
-        >
+        <div className="-mx-5 flex gap-4 overflow-x-auto px-5 pb-2">
           {features.map((feature) => (
-            <div
+            <NbCard
               key={feature.title}
-              className="min-w-[220px] flex-1 rounded-2xl border border-brand-border bg-brand-card p-4 shadow-[0_12px_30px_rgba(0,0,0,0.25)]"
+              bgColor={feature.color}
+              className="min-w-[180px] p-4"
             >
               <div className="text-2xl">{feature.emoji}</div>
-              <h3 className="mt-2 font-heading text-lg text-brand-cream">
-                {feature.title}
-              </h3>
-              <p className="mt-2 text-sm text-brand-cream/70">
-                {feature.body}
-              </p>
-            </div>
+              <h3 className="mt-2 font-heading text-sm">{feature.title}</h3>
+              <p className="mt-2 text-xs text-nb-muted">{feature.body}</p>
+            </NbCard>
           ))}
-        </motion.div>
+        </div>
 
-        <motion.footer
-          variants={{ hidden: { opacity: 0 }, show: { opacity: 1 } }}
-          className="flex flex-wrap items-center justify-center gap-4 text-xs text-brand-muted"
-        >
-          <a href="#" className="transition-colors hover:text-brand-cream">
-            Privacy Policy
-          </a>
-          <a href="#" className="transition-colors hover:text-brand-cream">
-            Terms
-          </a>
-          <a href="#" className="transition-colors hover:text-brand-cream">
-            Contact
-          </a>
-        </motion.footer>
+        <footer className="text-center text-xs text-nb-muted">
+          Privacy Policy | Terms | Contact
+        </footer>
       </motion.main>
     </div>
   );

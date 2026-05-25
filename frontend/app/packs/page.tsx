@@ -4,6 +4,9 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import AuthGuard from "../../components/AuthGuard";
+import NbBadge from "../../components/ui/NbBadge";
+import NbButton from "../../components/ui/NbButton";
+import NbCard from "../../components/ui/NbCard";
 import { api } from "../../lib/api";
 import { useAuthStore } from "../../store/authStore";
 
@@ -63,97 +66,96 @@ export default function PacksPage() {
 
   return (
     <AuthGuard>
-      <div className="min-h-screen bg-brand-bg text-brand-cream">
-      <main className="mx-auto flex w-full max-w-[480px] flex-col gap-6 px-5 pb-[calc(env(safe-area-inset-bottom,0px)+40px)] pt-8">
-        <header className="flex items-center justify-between">
-          <div>
-            <h1 className="font-heading text-2xl">Custom Packs</h1>
-            <p className="text-sm text-brand-cream/70">
-              Create and share your own word packs.
-            </p>
-          </div>
-          <Link href="/dashboard" className="text-lg">
-            ✕
-          </Link>
-        </header>
-
-        <div className="flex gap-2 rounded-full border border-brand-border bg-brand-card p-1">
-          <button
-            onClick={() => setTab("my")}
-            className={`flex-1 rounded-full px-3 py-2 text-xs font-semibold ${
-              tab === "my"
-                ? "bg-brand-red text-white"
-                : "text-brand-cream/70"
-            }`}
-          >
-            My Packs
-          </button>
-          <button
-            onClick={() => setTab("community")}
-            className={`flex-1 rounded-full px-3 py-2 text-xs font-semibold ${
-              tab === "community"
-                ? "bg-brand-red text-white"
-                : "text-brand-cream/70"
-            }`}
-          >
-            Community
-          </button>
-        </div>
-
-        {tab === "my" && (
-          <div className="flex flex-col gap-3">
-            <Link
-              href="/packs/create"
-              className="inline-flex h-12 items-center justify-center rounded-full bg-brand-red text-sm font-semibold text-white shadow-[0_12px_24px_rgba(255,59,92,0.35)]"
-            >
-              + Create New Pack
+      <div className="min-h-screen bg-nb-bg text-nb-text">
+        <main className="mx-auto flex w-full max-w-[480px] flex-col gap-6 px-5 pb-[calc(env(safe-area-inset-bottom,0px)+40px)] pt-8">
+          <header className="flex items-center justify-between">
+            <div>
+              <h1 className="font-heading text-2xl">CUSTOM PACKS</h1>
+              <p className="text-sm text-nb-muted">
+                Create and share your own word packs.
+              </p>
+            </div>
+            <Link href="/dashboard" className="text-lg font-semibold">
+              ✕
             </Link>
-            {myPacks.map((pack) => (
-              <div
-                key={pack.name}
-                className="flex items-center justify-between rounded-2xl border border-brand-border bg-brand-card px-4 py-3"
-              >
-                <div className="flex items-center gap-3">
-                  <div className="text-2xl">{pack.emoji}</div>
-                  <div>
-                    <div className="text-sm font-semibold">{pack.name}</div>
-                    <div className="text-xs text-brand-cream/60">
-                      {pack.count} words
-                    </div>
-                  </div>
-                </div>
-                <span className="rounded-full border border-brand-border px-2 py-1 text-[10px] text-brand-cream/70">
-                  {pack.isPublic ? "Public" : "Private"}
-                </span>
-              </div>
-            ))}
-          </div>
-        )}
+          </header>
 
-        {tab === "community" && (
-          <div className="flex flex-col gap-3">
-            {communityPacks.map((pack) => (
-              <div
-                key={pack.name}
-                className="flex items-center justify-between rounded-2xl border border-brand-border bg-brand-card px-4 py-3"
-              >
-                <div className="flex items-center gap-3">
-                  <div className="text-2xl">{pack.emoji}</div>
-                  <div>
-                    <div className="text-sm font-semibold">{pack.name}</div>
-                    <div className="text-xs text-brand-cream/60">
-                      by {pack.author}
+          <div className="flex gap-2 rounded-full border-2 border-black bg-white p-1">
+            <button
+              onClick={() => setTab("my")}
+              className={`flex-1 rounded-full px-3 py-2 text-xs font-semibold ${
+                tab === "my"
+                  ? "bg-[var(--nb-yellow)]"
+                  : "text-nb-muted"
+              }`}
+            >
+              My Packs
+            </button>
+            <button
+              onClick={() => setTab("community")}
+              className={`flex-1 rounded-full px-3 py-2 text-xs font-semibold ${
+                tab === "community"
+                  ? "bg-[var(--nb-yellow)]"
+                  : "text-nb-muted"
+              }`}
+            >
+              Community
+            </button>
+          </div>
+
+          {tab === "my" && (
+            <div className="flex flex-col gap-3">
+              <Link href="/packs/create" className="inline-flex">
+                <NbButton className="w-full">+ CREATE NEW PACK</NbButton>
+              </Link>
+              {myPacks.map((pack) => (
+                <NbCard
+                  key={pack.name}
+                  bgColor="var(--nb-surface)"
+                  className="flex items-center justify-between px-4 py-3"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="text-2xl">{pack.emoji}</div>
+                    <div>
+                      <div className="text-sm font-semibold">{pack.name}</div>
+                      <div className="text-xs text-nb-muted">
+                        {pack.count} words
+                      </div>
                     </div>
                   </div>
-                </div>
-                <span className="text-xs text-brand-cream/60">
-                  {pack.count} words
-                </span>
-              </div>
-            ))}
-          </div>
-        )}
-      </main>
+                  <NbBadge color={pack.isPublic ? "var(--nb-green)" : "var(--nb-pink)"}>
+                    {pack.isPublic ? "PUBLIC" : "PRIVATE"}
+                  </NbBadge>
+                </NbCard>
+              ))}
+            </div>
+          )}
+
+          {tab === "community" && (
+            <div className="flex flex-col gap-3">
+              {communityPacks.map((pack) => (
+                <NbCard
+                  key={pack.name}
+                  bgColor="var(--nb-surface)"
+                  className="flex items-center justify-between px-4 py-3"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="text-2xl">{pack.emoji}</div>
+                    <div>
+                      <div className="text-sm font-semibold">{pack.name}</div>
+                      <div className="text-xs text-nb-muted">
+                        by {pack.author}
+                      </div>
+                    </div>
+                  </div>
+                  <span className="text-xs font-semibold">
+                    {pack.count} words
+                  </span>
+                </NbCard>
+              ))}
+            </div>
+          )}
+        </main>
       </div>
     </AuthGuard>
   );
