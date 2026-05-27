@@ -30,6 +30,7 @@ export default function RevealPage() {
   const totalPlayers = players.length;
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setHasHydrated(useGameStore.persist.hasHydrated());
     const unsubscribe = useGameStore.persist.onFinishHydration(() => {
       setHasHydrated(true);
@@ -46,9 +47,13 @@ export default function RevealPage() {
   }, [hasHydrated, players.length, router]);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsRevealed(false);
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setHasHiddenAfterReveal(false);
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsHolding(false);
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setHoldProgress(0);
     holdStartRef.current = null;
     if (holdTimeoutRef.current) {
@@ -133,7 +138,7 @@ export default function RevealPage() {
 
   const playerStatus = useMemo(() => {
     if (!currentPlayer) return "";
-    return `${currentPlayer.name}'S TURN`;
+    return `${currentPlayer.name}&apos;S TURN`;
   }, [currentPlayer]);
 
   if (!hasHydrated || !currentPlayer) {
@@ -232,10 +237,10 @@ export default function RevealPage() {
                       className="flex h-full flex-col items-center justify-center gap-4"
                     >
                       <NbBadge color="#FF3B5C">
-                        🔴 YOU'RE THE IMPOSTOR
+                        🔴 YOU&apos;RE THE IMPOSTOR
                       </NbBadge>
                       <p className="font-heading text-xl text-white">
-                        YOU DON'T KNOW THE WORD
+                        YOU DON&apos;T KNOW THE WORD
                       </p>
                       <div className="w-full rounded-[12px] border-2 border-black bg-white px-4 py-3">
                         <p className="text-[11px] font-semibold uppercase text-nb-muted">
@@ -252,7 +257,7 @@ export default function RevealPage() {
                   ) : (
                     <div className="flex h-full flex-col items-center justify-center gap-4">
                       <NbBadge color="#00C875">
-                        🟢 YOU'RE A CIVILIAN
+                        🟢 YOU&apos;RE A CIVILIAN
                       </NbBadge>
                       <div className="font-heading text-4xl text-black">
                         <span className="inline-block bg-[#FFE135] px-4 py-2">

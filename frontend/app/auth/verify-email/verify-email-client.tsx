@@ -39,8 +39,9 @@ export default function VerifyEmailClient() {
       });
       toast.success("Email verified");
       router.push("/auth/login");
-    } catch (error: any) {
-      toast.error(error.response?.data?.message || "Verification failed");
+    } catch (error: unknown) {
+      const err = error as { response?: { data?: { message?: string } } };
+      toast.error(err.response?.data?.message || "Verification failed");
     } finally {
       setLoading(false);
     }
@@ -51,8 +52,9 @@ export default function VerifyEmailClient() {
       await api.post("/auth/resend-verification", { email });
       toast.success("Verification code resent");
       setCooldown(60);
-    } catch (error: any) {
-      toast.error(error.response?.data?.message || "Failed to resend code");
+    } catch (error: unknown) {
+      const err = error as { response?: { data?: { message?: string } } };
+      toast.error(err.response?.data?.message || "Failed to resend code");
     }
   };
 

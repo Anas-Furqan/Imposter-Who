@@ -15,6 +15,14 @@ const fallbackHistory = [
   { mode: "AI", pack: "Science", win: true, xp: 50, date: "2 days ago" },
 ];
 
+type GameHistory = {
+  mode: string;
+  pack_name: string;
+  won: boolean;
+  xp_earned: number;
+  created_at: string;
+};
+
 export default function ProfilePage() {
   return null;
 
@@ -40,7 +48,7 @@ export default function ProfilePage() {
           gamesWon: user.games_won,
         });
         setHistory(
-          (response.data.history || []).map((item: any) => ({
+          (response.data.history || []).map((item: GameHistory) => ({
             mode: item.mode,
             pack: item.pack_name,
             win: item.won,

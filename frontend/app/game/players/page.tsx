@@ -24,6 +24,7 @@ export default function PlayersPage() {
 
   useEffect(() => {
     if (!names.length && storedPlayers.length) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setNames(storedPlayers.map((player) => player.name));
     }
   }, [names.length, storedPlayers]);
@@ -85,7 +86,7 @@ export default function PlayersPage() {
             ←
           </button>
           <div>
-            <h1 className="font-heading text-2xl">WHO'S PLAYING? 👥</h1>
+            <h1 className="font-heading text-2xl">WHO&apos;S PLAYING? 👥</h1>
             <p className="text-xs text-nb-muted">Add at least 3 players</p>
           </div>
         </header>

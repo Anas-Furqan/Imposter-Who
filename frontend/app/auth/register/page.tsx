@@ -39,8 +39,9 @@ export default function RegisterPage() {
       });
       toast.success("Verification email sent");
       router.push(`/auth/verify-email?email=${encodeURIComponent(form.email)}`);
-    } catch (error: any) {
-      toast.error(error.response?.data?.message || "Registration failed");
+    } catch (error: unknown) {
+      const err = error as { response?: { data?: { message?: string } } };
+      toast.error(err.response?.data?.message || "Registration failed");
     } finally {
       setLoading(false);
     }

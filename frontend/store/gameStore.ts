@@ -46,7 +46,7 @@ const initialState = {
 
 export const useGameStore = create<GameState>()(
   persist(
-    (set, get) => ({
+    (set) => ({
       ...initialState,
       setPlayers: (names) =>
         set({

@@ -104,8 +104,7 @@ export const calculateVoteResult = (votes: Record<string, string>) => {
 
 export const calculateXP = (
   won: boolean,
-  wasImpostor: boolean,
-  _playerCount: number
+  wasImpostor: boolean
 ) => {
   if (won && wasImpostor) return 75;
   if (won) return 50;

@@ -18,6 +18,7 @@ export default function GameStartPage() {
   const [hasHydrated, setHasHydrated] = useState(false);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setHasHydrated(useGameStore.persist.hasHydrated());
     const unsubscribe = useGameStore.persist.onFinishHydration(() => {
       setHasHydrated(true);
@@ -34,6 +35,7 @@ export default function GameStartPage() {
     }
     if (hasHydrated && !starter && players.length) {
       const randomName = players[Math.floor(Math.random() * players.length)].name;
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setStarter(randomName);
     }
   }, [hasHydrated, players, gamePhase, router, starter]);

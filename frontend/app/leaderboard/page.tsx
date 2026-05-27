@@ -27,6 +27,8 @@ const fallbackPlayers = [
   { name: "Zoe", xp: 860 },
 ];
 
+type LeaderboardPlayer = { username: string; xp: number };
+
 export default function LeaderboardPage() {
   return null;
 
@@ -41,7 +43,7 @@ export default function LeaderboardPage() {
         const list = response.data || [];
         setPlayers(list);
         setTopThree(
-          list.slice(0, 3).map((player: any, index: number) => ({
+          list.slice(0, 3).map((player: LeaderboardPlayer, index: number) => ({
             name: player.username,
             xp: player.xp,
             rank: index + 1,

@@ -30,8 +30,9 @@ export default function ForgotPasswordPage() {
       await api.post("/auth/forgot-password", { email });
       toast.success("Reset code sent");
       setStep("code");
-    } catch (error: any) {
-      toast.error(error.response?.data?.message || "Failed to send code");
+    } catch (error: unknown) {
+      const err = error as { response?: { data?: { message?: string } } };
+      toast.error(err.response?.data?.message || "Failed to send code");
     } finally {
       setLoading(false);
     }
@@ -52,8 +53,9 @@ export default function ForgotPasswordPage() {
       });
       toast.success("Password updated");
       router.push("/auth/login");
-    } catch (error: any) {
-      toast.error(error.response?.data?.message || "Reset failed");
+    } catch (error: unknown) {
+      const err = error as { response?: { data?: { message?: string } } };
+      toast.error(err.response?.data?.message || "Reset failed");
     } finally {
       setLoading(false);
     }

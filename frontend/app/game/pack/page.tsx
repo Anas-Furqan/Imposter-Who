@@ -48,6 +48,7 @@ export default function PackPage() {
   const [hasHydrated, setHasHydrated] = useState(false);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setHasHydrated(useGameStore.persist.hasHydrated());
     const unsubscribe = useGameStore.persist.onFinishHydration(() => {
       setHasHydrated(true);

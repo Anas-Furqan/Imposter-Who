@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 import AuthGuard from "../../components/AuthGuard";
 import BottomNav from "../../components/BottomNav";
+import NbBadge from "../../components/ui/NbBadge";
 import NbButton from "../../components/ui/NbButton";
 import NbCard from "../../components/ui/NbCard";
 import { useAuthStore } from "../../store/authStore";

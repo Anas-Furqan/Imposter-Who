@@ -25,6 +25,14 @@ const fallbackCommunityPacks = [
   },
 ];
 
+type CustomPack = {
+  user_id: string;
+  name: string;
+  emoji: string;
+  words?: string[];
+  is_public: boolean;
+};
+
 export default function PacksPage() {
   const [tab, setTab] = useState<"my" | "community">("my");
   const user = useAuthStore((state) => state.user);
@@ -38,8 +46,8 @@ export default function PacksPage() {
         const items = response.data || [];
         setMyPacks(
           items
-            .filter((pack: any) => pack.user_id === user?.id)
-            .map((pack: any) => ({
+            .filter((pack: CustomPack) => pack.user_id === user?.id)
+            .map((pack: CustomPack) => ({
               name: pack.name,
               emoji: pack.emoji,
               count: pack.words?.length || 0,
@@ -48,8 +56,8 @@ export default function PacksPage() {
         );
         setCommunityPacks(
           items
-            .filter((pack: any) => pack.is_public && pack.user_id !== user?.id)
-            .map((pack: any) => ({
+            .filter((pack: CustomPack) => pack.is_public && pack.user_id !== user?.id)
+            .map((pack: CustomPack) => ({
               name: pack.name,
               emoji: pack.emoji,
               count: pack.words?.length || 0,
