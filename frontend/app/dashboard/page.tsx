@@ -2,14 +2,11 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
-import toast from "react-hot-toast";
+import { useState } from "react";
 import AuthGuard from "../../components/AuthGuard";
 import BottomNav from "../../components/BottomNav";
-import NbBadge from "../../components/ui/NbBadge";
 import NbButton from "../../components/ui/NbButton";
 import NbCard from "../../components/ui/NbCard";
-import { api } from "../../lib/api";
 import { useAuthStore } from "../../store/authStore";
 
 const modes = [
@@ -51,30 +48,11 @@ const modes = [
   },
 ];
 
-const fallbackLeaderboard = [
-  { name: "Nova", xp: 1240 },
-  { name: "Rogue", xp: 1180 },
-  { name: "Echo", xp: 1125 },
-  { name: "Blaze", xp: 980 },
-  { name: "Luna", xp: 910 },
-];
-
 export default function DashboardPage() {
   const user = useAuthStore((state) => state.user);
-  const [topPlayers, setTopPlayers] = useState(fallbackLeaderboard);
-
-  useEffect(() => {
-    const load = async () => {
-      try {
-        const response = await api.get("/user/leaderboard");
-        setTopPlayers(response.data.slice(0, 5));
-      } catch {
-        toast.error("Failed to load leaderboard");
-      }
-    };
-
-    load();
-  }, []);
+  const [avatarLabel] = useState(
+    user?.username?.slice(0, 2).toUpperCase() || "IW"
+  );
   return (
     <AuthGuard>
       <div className="min-h-screen bg-nb-bg text-nb-text">
@@ -90,9 +68,8 @@ export default function DashboardPage() {
               IMPOSTER WHO?
             </div>
             <div className="flex items-center gap-2">
-              <NbBadge color="var(--nb-yellow)">⚡ {user?.xp ?? 0} XP</NbBadge>
               <div className="h-8 w-8 rounded-full border-2 border-black bg-white text-center text-xs font-bold leading-7">
-                {user?.username?.slice(0, 2).toUpperCase() || "IW"}
+                {avatarLabel}
               </div>
             </div>
           </header>
@@ -135,45 +112,6 @@ export default function DashboardPage() {
             </div>
           </section>
 
-          <section className="grid grid-cols-3 gap-3">
-            {[
-              { label: "Games Played", value: "48" },
-              { label: "Games Won", value: "22" },
-              { label: "Win Rate", value: "46%" },
-            ].map((stat) => (
-              <NbCard key={stat.label} className="p-3 text-center">
-                <div className="font-mono text-lg font-bold">{stat.value}</div>
-                <div className="text-[10px] uppercase text-nb-muted">
-                  {stat.label}
-                </div>
-              </NbCard>
-            ))}
-          </section>
-
-          <NbCard className="p-4" bgColor="var(--nb-surface)">
-            <div className="flex items-center justify-between border-b-2 border-black pb-2">
-              <h3 className="font-heading text-sm">🏆 TOP PLAYERS</h3>
-              <Link href="/leaderboard" className="text-xs font-semibold underline">
-                VIEW ALL →
-              </Link>
-            </div>
-            <div className="mt-3 flex flex-col gap-2">
-              {topPlayers.map((player, index) => (
-                <div
-                  key={`${player.name}-${index}`}
-                  className="flex items-center justify-between rounded-[12px] border-2 border-black bg-white px-3 py-2"
-                >
-                  <div className="flex items-center gap-3">
-                    <NbBadge color="var(--nb-yellow)" size="sm">
-                      #{index + 1}
-                    </NbBadge>
-                    <span className="text-sm font-semibold">{player.name}</span>
-                  </div>
-                  <span className="font-mono text-xs">{player.xp} XP</span>
-                </div>
-              ))}
-            </div>
-          </NbCard>
         </motion.main>
         <BottomNav />
       </div>

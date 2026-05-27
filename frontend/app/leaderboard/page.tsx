@@ -28,6 +28,8 @@ const fallbackPlayers = [
 ];
 
 export default function LeaderboardPage() {
+  return null;
+
   const [tab, setTab] = useState<"week" | "all">("week");
   const [topThree, setTopThree] = useState(fallbackTopThree);
   const [players, setPlayers] = useState(fallbackPlayers);

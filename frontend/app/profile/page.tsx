@@ -16,6 +16,8 @@ const fallbackHistory = [
 ];
 
 export default function ProfilePage() {
+  return null;
+
   const [history, setHistory] = useState(fallbackHistory);
   const [profile, setProfile] = useState({
     username: "Player",

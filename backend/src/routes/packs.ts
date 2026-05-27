@@ -12,7 +12,7 @@ import { requireAuth } from "../middleware/auth";
 const router = Router();
 
 router.get("/", getPacks);
-router.get("/:id/words", requireAuth, getPackWords);
+router.get("/:id/words", getPackWords);
 router.get("/custom", requireAuth, getCustomPacks);
 router.post("/custom", requireAuth, createCustomPack);
 router.put("/custom/:id", requireAuth, updateCustomPack);

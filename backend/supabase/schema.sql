@@ -41,8 +41,7 @@ create table if not exists game_histories (
   player_count integer not null,
   xp_earned integer default 0,
   created_at timestamptz default now()
-);
-
+  
 create table if not exists word_packs (
   id uuid primary key default gen_random_uuid(),
   name text unique not null,
